@@ -13,14 +13,12 @@ This repository provides production-ready scripts to deploy and manage StreamSet
 - ✅ **Secure Configuration**: Credentials stored in Kubernetes Secrets
 - ✅ **HTTPS Support**: OpenShift Route with TLS termination
 - ✅ **Resource Management**: Configurable CPU and memory limits
-- ✅ **Engine Cleanup**: Script to remove offline engine registrations
 
 ## Prerequisites
 
 - OpenShift CLI (`oc`) installed and configured
 - Access to an OpenShift cluster with appropriate permissions
 - StreamSets account with API credentials from IBM Cloud or StreamSets Control Hub
-- `curl` and `jq` (for cleanup script)
 
 ## Quick Start
 
@@ -38,7 +36,7 @@ The scripts use default values, but you can override them:
 export SSET_API_KEY="your-api-key"
 export SSET_PROJECT_ID="your-project-id"
 export SSET_ENVIRONMENT_ID="your-environment-id"
-export SSET_BASE_URL=""
+export SSET_BASE_URL="https://api.ca-tor.dai.cloud.ibm.com"
 export STREAMSETS_NAMESPACE="streamsets"
 export STREAMSETS_CPU="4"
 export STREAMSETS_MEMORY="8Gi"
@@ -72,17 +70,6 @@ Main deployment script that creates all necessary Kubernetes resources:
 ```bash
 ./deploy-streamsets-engine.sh
 ```
-
-### `cleanup-streamsets-engines.sh`
-
-Script to remove offline engine registrations from StreamSets Control Hub via API.
-
-**Usage:**
-```bash
-./cleanup-streamsets-engines.sh
-```
-
-**Note:** This script attempts to use the StreamSets API. If engines are not accessible via API, manual cleanup through the StreamSets UI is required.
 
 ### `STREAMSETS_DEPLOYMENT_README.md`
 
@@ -211,12 +198,7 @@ oc delete namespace streamsets
 
 ### Clean Up Offline Engines
 
-Run the cleanup script:
-```bash
-./cleanup-streamsets-engines.sh
-```
-
-Or manually through StreamSets UI:
+Manually through StreamSets UI:
 1. Navigate to Execution → Engines
 2. Filter by Status = Offline
 3. Select and delete offline engines
@@ -312,7 +294,6 @@ For issues related to:
   - Initial release
   - Automated deployment script
   - TCP health probes
-  - Cleanup script for offline engines
   - Comprehensive documentation
 
 ## Authors
