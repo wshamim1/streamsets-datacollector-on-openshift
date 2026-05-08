@@ -205,41 +205,27 @@ Manually through StreamSets UI:
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────┐
-│         OpenShift Cluster               │
-│                                         │
-│  ┌───────────────────────────────────┐ │
-│  │  Namespace: streamsets            │ │
-│  │                                   │ │
-│  │  ┌─────────────────────────────┐ │ │
-│  │  │  Deployment                 │ │ │
-│  │  │  - StreamSets Data Collector│ │ │
-│  │  │  - CPU: 4 cores             │ │ │
-│  │  │  - Memory: 8Gi              │ │ │
-│  │  │  - Health: TCP probes       │ │ │
-│  │  └─────────────────────────────┘ │ │
-│  │              ↓                    │ │
-│  │  ┌─────────────────────────────┐ │ │
-│  │  │  Service (ClusterIP)        │ │ │
-│  │  │  Port: 18630                │ │ │
-│  │  └─────────────────────────────┘ │ │
-│  │              ↓                    │ │
-│  │  ┌─────────────────────────────┐ │ │
-│  │  │  Route (HTTPS)              │ │ │
-│  │  │  TLS: Edge Termination      │ │ │
-│  │  └─────────────────────────────┘ │ │
-│  └───────────────────────────────────┘ │
-└─────────────────────────────────────────┘
-                 ↓
-         Internet (HTTPS)
-                 ↓
-┌─────────────────────────────────────────┐
-│   IBM Cloud / StreamSets Control Hub    │
-│   - Engine Management                   │
-│   - Job Orchestration                   │
-│   - Monitoring & Metrics                │
-└─────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph OpenShift["OpenShift Cluster"]
+        subgraph NS["Namespace: streamsets"]
+            Deploy["Deployment<br/>StreamSets Data Collector<br/>CPU: 4 cores<br/>Memory: 8Gi<br/>Health: TCP probes"]
+            Service["Service<br/>ClusterIP<br/>Port: 18630"]
+            Route["Route<br/>HTTPS<br/>TLS: Edge Termination"]
+            
+            Deploy --> Service
+            Service --> Route
+        end
+    end
+    
+    Route -->|Internet HTTPS| ControlHub["IBM Cloud /<br/>StreamSets Control Hub<br/>- Engine Management<br/>- Job Orchestration<br/>- Monitoring & Metrics"]
+    
+    style OpenShift fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style NS fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Deploy fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style Service fill:#bbdefb,stroke:#1565c0,stroke-width:2px
+    style Route fill:#f8bbd0,stroke:#c2185b,stroke-width:2px
+    style ControlHub fill:#e1bee7,stroke:#6a1b9a,stroke-width:2px
 ```
 
 ## Security Considerations
