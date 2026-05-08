@@ -38,7 +38,7 @@ The scripts use default values, but you can override them:
 export SSET_API_KEY="your-api-key"
 export SSET_PROJECT_ID="your-project-id"
 export SSET_ENVIRONMENT_ID="your-environment-id"
-export SSET_BASE_URL="https://api.ca-tor.dai.cloud.ibm.com"
+export SSET_BASE_URL=""
 export STREAMSETS_NAMESPACE="streamsets"
 export STREAMSETS_CPU="4"
 export STREAMSETS_MEMORY="8Gi"
